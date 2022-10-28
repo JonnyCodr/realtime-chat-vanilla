@@ -1,5 +1,6 @@
 import store from "./store.js";
 import elements from "./elements.js";
+import socketHandler from "./socketHandler.js";
 
 const goToChatPage = () => {
   const introductionPage = document.querySelector(".introduction_page");
@@ -46,11 +47,20 @@ const createGroupChatbox = () => {
       const author = store.getUsername();
       const message = e.target.value;
       //send message to socket.io server
+      socketHandler.sendGroupChatMessage(author, message);
       newMessageInput.value = "";
     }
   });
 };
 
+const appendGroupChatMessage = (messageData) => {
+  const groupChatboxMessagesContainer =
+    document.getElementById(chatboxMessagesId);
+  const chatboxMessage = elements.getGroupChatMessage(messageData);
+  groupChatboxMessagesContainer.appendChild(chatboxMessage);
+};
+
 export default {
   goToChatPage,
+  appendGroupChatMessage,
 };
